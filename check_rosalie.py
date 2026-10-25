@@ -7,7 +7,7 @@ import urllib.parse
 import urllib.request
 
 RID = os.getenv("RID", "363169")            # ID Zenchef de Brasserie Rosalie
-DATE = os.getenv("DATE", "2026-12-23")
+DATE = os.getenv("DATE", "2026-12-24")
 GUESTS = int(os.getenv("GUESTS", "7"))
 SLOT = os.getenv("SLOT", "20:00")
 TOPIC = os.environ["NTFY_TOPIC"]
