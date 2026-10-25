@@ -29,7 +29,7 @@ jobs:
       - name: Vérifier la disponibilité
         run: python3 check_rosalie.py
         env:
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_TOPIC: rosalie-x7k29qf
           TEST_NOTIFY: ${{ inputs.test && '1' || '0' }}
 
       - name: Sauver l'état
