@@ -1,0 +1,40 @@
+name: Rosalie watcher
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # toutes les 5 min (minimum GitHub, best effort)
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Envoyer une notification de test"
+        type: boolean
+        default: false
+
+concurrency: rosalie-watcher
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restaurer l'état (anti-spam)
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: rosalie-state-${{ github.run_id }}
+          restore-keys: rosalie-state-
+
+      - name: Vérifier la disponibilité
+        run: python3 check_rosalie.py
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TEST_NOTIFY: ${{ inputs.test && '1' || '0' }}
+
+      - name: Sauver l'état
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: rosalie-state-${{ github.run_id }}
